@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sheoharnama Bazzar{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="sbn-navbar">
+        <div class="sbn-container">
+            <!-- Logo Section -->
+            <div class="sbn-logo">
+                <a href="/" class="sbn-logo-link">SheoharnamaBazzar</a>
+            </div>
+
+            <!-- Location Widget -->
+            <div class="sbn-location" id="location-widget">
+                <span class="sbn-location-icon">📍</span>
+                <div class="sbn-location-text">
+                    <span class="sbn-deliver-to">Deliver to</span>
+                    <span class="sbn-user-location">{{ current_address }}</span>
+                    <a href="{% url 'update_address' %}" class="change-link">Change</a>
+                </div>
+            </div> <!-- This closing div was missing -->
+
+    
+
+                <!-- Search Bar -->
+                <form class="sbn-search-form" method="GET" action="{% url 'search' %}">
+                    <select class="sbn-search-category" name="category">
+                        <option value="">सभी श्रेणियाँ</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <input type="text" class="sbn-search-input" name="q" placeholder="Search Sheoharnama Bazzar">
+                    <button type="submit" class="sbn-search-btn">🔍</button>
+                </form>
+
+                <!-- Account -->
+                {% if user.is_authenticated %}
+                <div class="sbn-item sbn-account">
+                    <span class="sbn-hello-text">नमस्ते,</span>
+                    <span class="sbn-account-text">{{ user.username }}</span> 
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">लॉगआउट</button>
+                    </form>
+                </div>
+                {% else %}
+                <!-- Register -->
+                <div class="auth-links">
+                    <span class="sbn-hello-text">नया उपयोगकर्ता?</span>
+                    <a href="{% url 'register' %}">रजिस्टर करें</a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'login' %}">लॉगिन करें</a>
+                </div>
+                {% endif %}
+
+          <!--Retrun and order  -->
+  <div class="sbn-orders-container">
+    <div class="sbn-item orders-trigger">
+      <span class="sbn-returns-text">Returns</span>
+      <span class="sbn-orders-text">& Orders ▼</span>
+
+      <!-- Dropdown Menu -->
+      <div class="sbn-dropdown">
+        <a href="{% url 'orders_history' %}">Your Orders</a>
+        <a href="{% url 'return_requests' %}">Return a Product</a>
+        <a href="{% url 'track_package' %}">Track Package</a>
+        <a href="{% url 'help' %}">Help</a>
+      </div>
+    </div>
+  </div>
+
+  <a href="{% url 'cart' %}" class="sbn-cart">
+    <span class="sbn-cart-icon">🛒</span>
+    <span class="sbn-cart-text">Cart</span>
+    <span class="sbn-cart-count">0</span>
+  </a>
+</div>
+
+        <!-- Secondary Navigation -->
+        <div class="sbn-secondary-nav">
+            <div class="sbn-secondary-container">
+                <div class="sbn-all-categories">
+                    <span class="sbn-menu-icon">☰</span>
+                    <span>सभी श्रेणियाँ</span>
+                    <div class="sbn-dropdown-content">
+                        <a href="{% url 'list' %}">सभी उत्पाद</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'category_products' 'achaar' %}">आचार</a>
+                        <a href="{% url 'category_products' 'kapde' %}">कपड़े</a>
+                        <a href="{% url 'category_products' 'namkeen' %}">नमकीन</a>
+                        <a href="{% url 'category_products' 'makhana' %}">मखाना</a>
+                    </div>
+                </div>
+
+                <div class="sbn-links">
+                    <a href="{% url 'list' %}">आचार</a>
+                    <a href="{% url 'list' %}">कपड़े </a>
+                    <a href="{% url 'list' %}">नमकीन</a>
+                    <a href="{% url 'list' %}">त्योहारी डील्स</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="sbn-main-container">
+        {% block content %}
+        <!-- Page content will go here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="sbn-footer">
+        <div class="sbn-footer-content">
+            <div class="sbn-footer-section">
+                <h4>Sheoharnama Bazzar</h4>
+                <p>शिवहर का अपना बाज़ार</p>
+            </div>
+            <div class="sbn-footer-section">
+                <h4>ऐड्रेस</h4>
+                <p>मिश्रा टोला, वार्ड नंबर 18, सरयुग कैंपस, शिवहर - 843329 (बिहार)</p>
+                <p>+919835173482</p>
+                <p>sheoharnama@gmail.com</p>
+            </div>  
+            <div class="sbn-footer-section">
+                <h4>त्वरित लिंक</h4>
+                <a href="/about/">हमारे बारे में</a>
+                <a href="/contact/">संपर्क करें</a>
+                <a href="/shipping/">शिपिंग जानकारी</a>
+            </div>
+        </div>
+        <div class="sbn-footer-bottom">
+            <p>&copy; 2025 Sheoharnama Bazzar. सभी अधिकार सुरक्षित</p>
+        </div>
+    </footer>
+    
+</body>
+</html>

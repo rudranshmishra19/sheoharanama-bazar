@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Track Your Packages - Sheoharnama Bazzar{% endblock %}
+
+{% block content %}
+<div class="sbn-main-container">
+    <div class="tracking-header">
+        <h1>Track Your Packages</h1>
+        <p>Monitor all your orders in one place</p>
+    </div>
+
+    <!-- Tracking Overview -->
+    <div class="tracking-overview">
+        <div class="overview-card">
+            <h3>Total Orders</h3>
+            <span class="overview-count">{{ total_orders }}</span>
+        </div>
+        <div class="overview-card">
+            <h3>Active Deliveries</h3>
+            <span class="overview-count">{{ active_orders }}</span>
+        </div>
+        <div class="overview-card">
+            <h3>Delivered</h3>
+            <span class="overview-count">{{ delivered_orders.count }}</span>
+        </div>
+    </div>
+
+    <!-- Active Orders Section -->
+    <div class="tracking-section">
+        <h2>Active Deliveries</h2>
+        {% if pending_orders %}
+            <div class="orders-grid">
+                {% for order in pending_orders %}
+                <div class="tracking-card active">
+                    <div class="tracking-header">
+                        <h4>Order #{{ order.id }}</h4>
+                        <span class="status-badge {{ order.status }}">{{ order.get_status_display }}</span>
+                    </div>
+                    <div class="tracking-details">
+                        <p><strong>Placed on:</strong> {{ order.created_at|date:"M d, Y" }}</p>
+                        <p><strong>Total:</strong> ₹{{ order.get_cart_total }}</p>
+                        <p><strong>Items:</strong> {{ order.get_cart_items }} item(s)</p>
+                    </div>
+                    <div class="tracking-actions">
+                        <a href="{% url 'track_single_package' order.id %}" class="btn-track">View Details</a>
+                        <a href="{% url 'order_details' order.id %}" class="btn-secondary">Order Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-orders">
+                <p>No active deliveries found.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Delivered Orders -->
+    <div class="tracking-section">
+        <h2>Delivered Orders</h2>
+        {% if delivered_orders %}
+            <div class="orders-grid">
+                {% for order in delivered_orders|slice:":5" %}
+                <div class="tracking-card delivered">
+                    <div class="tracking-header">
+                        <h4>Order #{{ order.id }}</h4>
+                        <span class="status-badge delivered">Delivered</span>
+                    </div>
+                    <div class="tracking-details">
+                        <p><strong>Delivered on:</strong> {{ order.updated_at|date:"M d, Y" }}</p>
+                        <p><strong>Total:</strong> ₹{{ order.get_cart_total }}</p>
+                    </div>
+                    <div class="tracking-actions">
+                        <a href="{% url 'order_details' order.id %}" class="btn-secondary">View Order</a>
+                        <a href="{% url 'return_requests' %}" class="btn-return">Return Item</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-orders">
+                <p>No delivered orders found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %} मुख पृष्ठ - Sheoharnama Store{% endblock %}
+{% block content %}
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <div class="hero-content">
+    <h1>शिवहर का अपना बाजार</h1>
+    <p>ताज़ा आचार, मखाने और स्टाइलिश टी-शर्ट</p>
+    <a href="{% url 'list' %}" class="cta-button">अभी खरीदें</a>
+  </div>
+</div>
+<!-- Featured Categories -->
+ <section class="featured-categories">
+  <h2>हमारे नवीनतम उत्पाद</h2>
+  <div class="categories-grid">
+    <div class="category-card">
+      <h3>आचार</h3>
+      <p>घर जैसा स्वाद और पारंपरिक मसालों की खुशबू</p>
+      <a href="{% url 'category_products' 'achaar' %}" class="category-btn">देखें</a>
+    </div>
+    <div class="category-card">
+      <h3>मखाना</h3>
+      <p>स्वादिष्ट और पौष्टिक स्नैक, जो सेहत के लिए बेहतरीन है।</p>
+      <a href="{% url 'category_products' 'makhana' %}" class="category-btn">देखें</a>
+    </div>
+    <div class="category-card">
+       <h3>टी-शर्ट</h3>
+       <p>आरामदायक कपड़ा और स्टाइलिश डिज़ाइन के साथ।</p>
+      <a href="{% url 'category_products' 't-shirt' %}" class="category-btn">देखें</a>
+    </div>
+  
+    </div>
+  </div>
+ </section>
+ <!-- Why Choose us -->
+  <section class="why-us">
+    <h2>क्यों चुनें Sheoharnama Bazzar?</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon"></div>
+        <h3>मुफ्त डिलीवरी</h3>
+        <p>"₹250 से अधिक के ऑर्डर पर"</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"></div>
+        <h3>बेहतरीन क्वालिटी</h3>
+        <p>ताज़े और प्रामाणिक उत्पाद</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"></div>
+        <h3>सुरक्षित भुगतान</h3>
+        <p>आसान और सुरक्षित पेमेंट</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"></div>
+        <h3>24/7 सपोर्ट </h3>
+        <p>हमेशा आपकी सेवा में</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

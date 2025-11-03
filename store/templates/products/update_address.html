@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Update Address {% endblock %}
+{% block content %}
+
+<h2>Your Current Location</h2>
+<div class="sbn-location-text">
+    <span class="sbn-deliver-to">Deliver to</span>
+    <span class="sbn-user-location">{{ current_address }}</span>
+</div>
+
+<h3>Update Address</h3>
+<form method="POST" class="address-form">
+    {% csrf_token %}
+
+    <!-- Country -->
+    <div class="form-group">
+        <label>Country/Region</label>
+        <input type="text" value="India" class="static-field" readonly>
+    </div>
+
+    <!-- Name -->
+    <div class="form-group">
+        <label>Full Name (First and Last)</label>
+        <input type="text" name="full_name" value="{{ full_name }}" placeholder="Enter full name" required>
+        
+    </div>
+
+    <!-- Mobile -->
+    <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" name="mobile" value="{{ mobile }}" placeholder="Enter mobile number" pattern="[0-9]{10}" maxlength="10" required>
+        <small>May be used to assist delivery</small>
+    </div>
+
+    <!-- Pincode -->
+    <div class="form-group">
+        <label>Pincode</label>
+        <input type="text" name="pincode" value="{{ pincode }}" placeholder="6 digits [0-9] PIN code" maxlength="6" pattern="[0-9]{6}" required>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+        <label>Flat, House No., Building, Company, Apartment</label>
+        <input type="text" name="address_line1" value="{{ address_line1 }}" placeholder="Enter address line 1" required>
+    </div>
+
+    <!-- Landmark -->
+    <div class="form-group">
+        <label>Landmark</label>
+        <input type="text" name="landmark" id="landmark"  value="{{ landmark }}" placeholder="Enter nearest landmark">
+    </div>
+
+    <!-- City -->
+    <div class="form-group">
+        <label>Town/City</label>
+        <input type="text" name="city" value="{{ city }}" id="city" placeholder="Enter your city" required>
+    </div>
+
+    <!-- State -->
+    <div class="form-group">
+        <label>State</label>
+        <select name="state" value="{{ state }}" id="state" required>
+            <option value="">Choose a state</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+            <option value="Assam">Assam</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Goa">Goa</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Manipur">Manipur</option>
+            <option value="Meghalaya">Meghalaya</option>
+            <option value="Mizoram">Mizoram</option>
+            <option value="Nagaland">Nagaland</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Sikkim">Sikkim</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Tripura">Tripura</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="West Bengal">West Bengal</option>
+            
+            <!-- Union Territories -->
+            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+            <option value="Ladakh">Ladakh</option>
+            <option value="Lakshadweep">Lakshadweep</option>
+            <option value="Puducherry">Puducherry</option>
+        </select>
+    </div>
+
+    <!-- Default Address -->
+      <div class="form-group">
+        <label>
+            <input type="checkbox" name="default_address" 
+                   {% if default_address %}checked{% endif %}>
+            Set as default address
+        </label>
+    </div>
+
+    <!-- Instructions -->
+    <div class="form-group">
+        <label>Delivery Instructions (optional)</label>
+        <textarea name="instructions" placeholder="Add preferences, notes, access codes, and more">{{ instructions }}</textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-action">
+        <button type="submit" class="btn-primary">Add Address</button>
+        <a href="{% url 'home' %}" class="btn-secondary">Cancel</a>
+    </div>
+</form>
+
+{% endblock %}

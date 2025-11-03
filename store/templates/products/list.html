@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %} उत्पाद - Sheoharnama Store {%endblock %}
+
+{%block content %}
+<section class="products-header">
+    <h1>Humare products</h1>
+    <p>Gunwanta and vishwasniya ka chayan</p>
+</section>
+
+<section class="products-grid">
+    <!-- Django will populate tihs  -->
+     {% for product in products %}
+     <div class="product-card">
+        <h3>{{product.name}}</h3>
+        <p>Kimat: {{product.price}}</p>
+        <button>Cart mein jode</button>
+
+     </div>
+     {% empty %}
+     <p>Koi uplabd nhi hai</p>
+     {% endfor %}
+
+</section>
+{% endblock %}

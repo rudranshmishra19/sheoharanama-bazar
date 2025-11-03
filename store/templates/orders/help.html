@@ -1,0 +1,112 @@
+{% extends 'base.html ' %}
+{% block title %} Help Center -Sheoharnama Bazzar {% endblock %}
+
+{% block content %}
+<div class="sbn-main-container">
+    <!-- Help center Header -->
+     <div class="help-header">
+        <h1>Help Center</h1>
+        <p>How can we help you today? </p>
+
+        <!-- Search Bar -->
+         <div class="help-search">
+            <form class="search-form">
+                <input type="text" placeholder="search for help articles, order, returns..." class="search-input">
+                <button type="submit" class="search-btn">
+                    🔍 
+                </button>
+            </form>
+         </div>
+     </div>
+     <!-- Quick Help Section -->
+      <div class="quick-help-sections">
+        <div class="help-section-card">
+            <div class="help-icon">📦</div>
+            <h3>Orders & Shipping</h3>
+            <p>Track packages, view order history, and shipping information </p>
+            <a href="{% url 'track_package' %}" class="help-linl">Get Help -></a>
+        </div>
+
+        <div class="help-section-card">
+            <div class="help-icon">🔄</div>
+            <h3>Return & Refunds</h3>
+            <p>Return items, request refunds, and exchange products </p>
+            <a href="{% url 'return_requests' %}" class="help-link">Get Help -></a>
+        </div>
+
+        <div class="help-section-card">
+            <div class="help-icon">💳</div>
+            <h3>Payment & Pricing</h3>
+            <p>Payment methods,billing issue,and price inquiries</p>
+             <a href="#payments" class="help-link">Get Help -></a>   
+        </div>
+        <div class="help-section-card">
+            <div class="help-icon">🔒</div>
+            <h3>Account & Security </h3>
+            <p>Login issues, password reset, and account security</p>
+            <a href="#account" class="help-link">Get Help -></a>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+       <!-- Simple FAQ Section -->
+    <div class="simple-faq">
+        <h2>Common Questions</h2>
+        
+        <div class="faq-list">
+            <div class="faq-item">
+                <h4>How can I track my order?</h4>
+                <p>Visit the <a href="{% url 'track_package' %}">Track Package</a> page with your order number and email.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>What is your return policy?</h4>
+                <p>7-day return policy for most items in original condition. Some items cannot be returned.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>How long does shipping take?</h4>
+                <p>within 5-7 days</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Can I cancel my order?</h4>
+                <p>Orders can be cancelled within 1 hour of placement from "Your Orders" section.</p>
+            </div>
+        </div>
+    </div>
+
+       </div>
+      
+       <!-- Contact Information -->
+        <div class="contact-info">
+            <h2>Contact support</h2>
+            <div class="contact-options">
+                <div class="contact-option">
+                    <div class="contact-icon">📞</div>
+                    <h4>Call us</h4>
+                    <p>9471846896</p>
+                    <small>7:00 AM -10:00 PM IST</small>
+                </div>
+                
+                <div class="contact-option">
+                    <div class="contact-icon">✉️</div>
+                    <h4>Email us</h4>
+                     <p>support&sheoharnamabazzar.com</p>
+                     <small>Response within 24 hours</small> 
+                </div>
+
+            </div>
+        </div>
+        <!-- Quick Links -->
+         <div class="quick-links">
+            <h3>Quick Links</h3>
+            <div class="link-grid">
+                <a href="{% url 'orders_history' %}" class="quick-link">Your Orders</a>
+                <a href="{% url 'return_requests' %}" class="quick-link">Returns</a>
+                <a href="{% url 'track_package' %}" class="quick-link">Track Package</a>
+                <a href="/shpping-info" class="quick-link">Shipping Info</a>
+            </div>
+         </div>
+</div>
+{% endblock %}

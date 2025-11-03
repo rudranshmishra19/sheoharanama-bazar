@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}  लॉगिन {% endblock %}
+{% block content %} 
+<div class="login-container">
+    <div class="login-form">
+        <h2 class="login-title">लॉगिन करें</h2>
+
+       
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">लॉगिन</button>
+        </form> 
+        <p>नया उपयोगकर्ता? <a href="{% url 'register' %}">रजिस्टर करें</a></p>
+    </div>
+    </div>
+        {% endblock %}
+        
