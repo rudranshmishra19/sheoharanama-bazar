@@ -21,7 +21,8 @@ class Product(models.Model):
     available=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-
+    image = models.ImageField(upload_to='products/', blank=True, null=True, default='proudcts/default.png')
+    
     def __str__(self):
         return self.name
 

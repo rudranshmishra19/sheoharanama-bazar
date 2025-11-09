@@ -6,35 +6,55 @@
   <div class="hero-content">
     <h1>शिवहर का अपना बाजार</h1>
     <p>ताज़ा आचार, मखाने और स्टाइलिश टी-शर्ट</p>
-    <a href="{% url 'list' %}" class="cta-button">अभी खरीदें</a>
+    <a href="#products" class="cta-button">अभी खरीदें</a>
   </div>
 </div>
-<!-- Featured Categories -->
- <section class="featured-categories">
-  <h2>हमारे नवीनतम उत्पाद</h2>
-  <div class="categories-grid">
-    <div class="category-card">
-      <h3>आचार</h3>
-      <p>घर जैसा स्वाद और पारंपरिक मसालों की खुशबू</p>
-      <a href="{% url 'category_products' 'achaar' %}" class="category-btn">देखें</a>
-    </div>
-    <div class="category-card">
-      <h3>मखाना</h3>
-      <p>स्वादिष्ट और पौष्टिक स्नैक, जो सेहत के लिए बेहतरीन है।</p>
-      <a href="{% url 'category_products' 'makhana' %}" class="category-btn">देखें</a>
-    </div>
-    <div class="category-card">
-       <h3>टी-शर्ट</h3>
-       <p>आरामदायक कपड़ा और स्टाइलिश डिज़ाइन के साथ।</p>
-      <a href="{% url 'category_products' 't-shirt' %}" class="category-btn">देखें</a>
-    </div>
-  
-    </div>
-  </div>
- </section>
- <!-- Why Choose us -->
-  <section class="why-us">
-    <h2>क्यों चुनें Sheoharnama Bazzar?</h2>
+<section class="products-grid" id="products">
+  {% for product in featured_products %}
+  <div class="product-card">
+    
+    {% if product.image and product.image.name != 'products/default.png' %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="sbn-product-image">
+   
+    {% else %}
+    <img src="{{ MEDIA_URL }}products/default.png" alt="Default image">
+   
+    {% endif %}
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price }}: से शुरू</p>
+         <p>{{ product.description }}</p>
+        <button>देखें</button>
+        
+      </div>
+      {% endfor %}
+    </section>
+    <!-- Featured Categories --> -->
+      <!-- <section class="featured-categories">
+      <h2>हमारे नवीनतम उत्पाद</h2>
+      <div class="categories-grid">
+        <div class="category-card">
+          <h3>आचार</h3>
+          <p>घर जैसा स्वाद और पारंपरिक मसालों की खुशबू</p>
+          <a href="{% url 'category_products' 'achaar' %}" class="category-btn">देखें</a>
+        </div>
+        <div class="category-card">
+          <h3>मखाना</h3>
+          <p>स्वादिष्ट और पौष्टिक स्नैक, जो सेहत के लिए बेहतरीन है।</p> 
+          <a href="{% url 'category_products' 'makhana' %}" class="category-btn">देखें</a>
+        </div>
+        <div class="category-card">
+           <h3>टी-शर्ट</h3>
+           <p>आरामदायक कपड़ा और स्टाइलिश डिज़ाइन के साथ।</p>
+          <a href="{% url 'category_products' 't-shirt' %}" class="category-btn">देखें</a>
+          
+        </div>
+      
+        </div>
+      </div>
+     </section> -->
+    <!-- Why Choose us -->
+    <section class="why-us">
+      <h2>क्यों चुनें Sheoharnama Bazzar?</h2>
     <div class="features-grid">
       <div class="feature">
         <div class="feature-icon"></div>

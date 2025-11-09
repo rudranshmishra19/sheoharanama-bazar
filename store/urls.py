@@ -1,6 +1,8 @@
 from django.urls import path
 from .import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns=[
     path('',views.home_view,name='home'),
@@ -23,8 +25,9 @@ urlpatterns=[
     path('orders/return/',views.return_requests,name='return_requests'),
     path('orders/buy-again/',views.buy_again,name='buy_again'),
     path('track-package/',views.track_package,name='track_package'),
-    path('orders/help',views.help,name='help'),
+    path('orders/help/',views.help,name='help'),
+    path('error/',views.error,name='error'),
     
     
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

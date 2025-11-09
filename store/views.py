@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from django.utils import translation
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -33,7 +32,7 @@ def test_categories(request):
 def home_view(request):
     """Home page with dynamic categories"""
     categories=Category.objects.all() #Get all categories from database
-    featured_products=Product.objects.filter(available=True)[:6]  #frist 6 products
+    featured_products=Product.objects.filter(available=True)[:4]  #frist 6 products
 
     #Get address from session or use default
    
@@ -97,6 +96,10 @@ def product_list(request):
         #Handle exeption 
         return render(request,'error.html',{'error':str(e)})
 
+def error(request):
+    return render(request,'error.html')    
+
+@login_required
 def track_package(request):
     """Track all the packages """
     try:
@@ -128,7 +131,7 @@ def track_package(request):
         }
 
     return render(request,'orders/track_package.html',context)
-
+@login_required
 def help(request):
     "Simple view to render help page"
     return render(request,'orders/help.html')

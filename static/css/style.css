@@ -372,7 +372,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-    padding: 20px 0;
+    padding: 40px 0;
+    justify-items: center;
+}
+html {
+  scroll-behavior: smooth;
+}
+.section-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
 }
 
 .sbn-product-card {
@@ -393,13 +403,14 @@
 }
 
 .sbn-product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    width: 100%;               /* image takes full card width */
+    height: 220px;             /* or adjust as needed */
+    object-fit: cover;         /* crop neatly instead of stretch */
     border-radius: 8px;
     margin-bottom: 15px;
     background: var(--sbn-light);
 }
+
 
 .sbn-product-name {
     font-size: 1.2rem;
@@ -440,6 +451,7 @@
     transition: all 0.3s ease;
     font-size: 1rem;
 }
+
 
 .sbn-add-to-cart:hover {
     background: #d35400;
@@ -699,7 +711,7 @@
 
 .sbn-returns-text {
   font-size: 12px;
-  color: #555;
+  color: white;
 }
 
 .sbn-orders-text {
@@ -968,7 +980,83 @@
     background: var(--sbn-border);
     margin: 5px 0;
 }
+/* Products Page Styles */
+.products-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, var(--sbn-primary) 0%, var(--sbn-dark) 100%);
+    color: white;
+    border-radius: 10px;
+}
 
+.products-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.products-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.product-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 1px solid var(--sbn-border);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.product-card h3 {
+    color: var(--sbn-primary);
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.product-card p {
+    color: var(--sbn-text);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.product-card button {
+    background: var(--sbn-secondary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.product-card button:hover {
+    background: #d35400;
+}
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 /* Navigation Links */
 .sbn-links {
     display: flex;
