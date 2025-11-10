@@ -11,24 +11,6 @@ from django.shortcuts import render
 from .models import Order,Product,OrderItem
 from django.db.models import Q
 
-# Category views
-def category_products(request,category_slug):
-    """
-     Display products for a specific category
-    """
-    category=get_object_or_404(Category,slug=category_slug)
-    products=Product.objects.filter(category=category,avaiable=True)
-
-    context={
-        'category':category,
-        'products':products,
-    }
-    return render(request,'products/category_products.html',context)
-
-
-def test_categories(request):
-    return render(request, 'base.html')
-
 def home_view(request):
     """Home page with dynamic categories"""
     categories=Category.objects.all() #Get all categories from database
@@ -46,6 +28,44 @@ def home_view(request):
                                                               
     }
     return render(request,'products/home.html',context)
+# Category views
+def category_products(request,category_slug):
+    """
+     Display products for a specific category
+    """
+    category=get_object_or_404(Category,slug=category_slug)
+    products=Product.objects.filter(category=category,available=True)
+
+    context={
+        'category':category,
+        'products':products,
+    }
+    return render(request,'products/category_products.html',context)
+
+
+def test_categories(request):
+    return render(request, 'base.html')
+
+
+        
+def product_list(request):
+    """All products page"""
+    try:
+
+        categories=Category.objects.all()
+        products=Product.objects.filter(available=True)
+
+        context={
+           'categories':categories,
+            'products':products,
+            'featured_products':products[:4] 
+
+
+       } 
+        return render(request,'products/list.html',context)
+    except Exception as e:
+        #Handle exeption 
+        return render(request,'error.html',{'error':str(e)})
 
 @login_required
 def order_history(request):
@@ -76,26 +96,6 @@ def buy_again(request):
         purchased_products=[]
     context={'products':purchased_products}
     return render(request,'orders/buy_again.html',context)
-        
-def product_list(request):
-    """All products page"""
-    try:
-
-        categories=Category.objects.all()
-        products=Product.objects.filter(available=True)
-
-        context={
-           'categories':categories,
-            'products':products,
-            'featured_products':products[:4] 
-
-
-       } 
-        return render(request,'products/list.html',context)
-    except Exception as e:
-        #Handle exeption 
-        return render(request,'error.html',{'error':str(e)})
-
 def error(request):
     return render(request,'error.html')    
 

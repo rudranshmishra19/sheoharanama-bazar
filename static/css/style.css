@@ -50,7 +50,7 @@
 .sbn-location {
     display: flex;
     align-items: center;
-    padding: 4px 4px;
+    padding: 8px 8px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 5px;
     cursor: pointer;
@@ -64,7 +64,7 @@
 .sbn-location {
     display: flex;
     align-items: center;
-    padding: 8px 4px;
+    padding: 8px 8px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     background: white;
@@ -1035,7 +1035,7 @@ html {
     font-weight: 500;
 }
 
-.product-card button {
+.product-card a {
     background: var(--sbn-secondary);
     color: white;
     border: none;
@@ -1045,9 +1045,11 @@ html {
     cursor: pointer;
     width: 100%;
     transition: background 0.3s ease;
+    text-decoration: none;
+    
 }
 
-.product-card button:hover {
+.product-card a:hover {
     background: #d35400;
 }
 .product-image {

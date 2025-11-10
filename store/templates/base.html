@@ -94,18 +94,20 @@
                         <a href="{% url 'list' %}">सभी उत्पाद</a>
                         <div class="dropdown-divider"></div>
                         
-                        <a href="{% url 'list' %}">आचार</a>
+                        <a href="{% url 'list' %}">सभी प्रोडक्ट</a>
+                        <a href="{% url 'category_products' product.category.slug %}">आचार</a>
                         <a href="{% url 'list' %}">कपड़े</a>
-                        <a href="{% url 'list' %}">मखाना</a>
+                        <a href="{% url 'list' %}">स्नैक्स</a>
                        
 
                     </div>
                 </div>
 
                 <div class="sbn-links">
+                    <a href="{% url 'list' %}">सभी प्रोडक्ट</a>
                     <a href="{% url 'list' %}">आचार</a>
                     <a href="{% url 'list' %}">कपड़े </a>
-                    <a href="{% url 'list' %}">मखाना</a>
+                    <a href="{% url 'list' %}">स्नैक्स</a>
                    
                 </div>
             </div>

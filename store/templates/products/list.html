@@ -13,10 +13,10 @@
         
     {% if product.image and product.image.name != 'products/default.png' %}
     <img src="{{ product.image.url }}" alt="{{ product.name }}" class="sbn-product-image">
-    <p><small>Using PRODUCT image</small></p>
+    <!-- <p><small>Using PRODUCT image</small></p> -->
 {% else %}
     <img src="{{ MEDIA_URL }}products/default.png" alt="Default image">
-    <p><small>Using DEFAULT image</small></p>
+    <!-- <p><small>Using DEFAULT image</small></p> -->
 {% endif %}
 
         
