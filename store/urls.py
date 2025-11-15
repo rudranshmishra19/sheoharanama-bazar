@@ -5,8 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns=[
-    path('',views.home_view,name='home'),
-    path('home/',views.home_view,name='home'),
+     path('',views.home_view,name='home'),
+    path('home',views.home_view,name='home'),
     path('list/',views.product_list,name='list'),
     path('category/<slug:category_slug>/',views.category_products,name='category_products'),
     path('cart/',views.cart_view,name='cart'),
@@ -26,7 +26,7 @@ urlpatterns=[
     path('orders/buy-again/',views.buy_again,name='buy_again'),
     path('track-package/',views.track_package,name='track_package'),
     path('orders/help/',views.help,name='help'),
-    path('error/',views.error,name='error'),
+    path('errors/',views.error,name='errors'),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

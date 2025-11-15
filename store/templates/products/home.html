@@ -22,7 +22,7 @@
     {% endif %}
         <h3>{{ product.name }}</h3>
         <p>{{ product.price }}: से शुरू</p>
-         <p>{{ product.description }}</p>
+         <p>{{ product.description|truncatechars:60 }}</p>
           <a href="{% url 'category_products' product.category.slug %}">देखें</a>
         <!-- <button>देखें</button> -->
         

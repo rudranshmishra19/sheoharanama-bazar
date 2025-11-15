@@ -1,13 +1,51 @@
 {% extends "base.html" %}
-{% block title %}Shopping Cart {% endblock %}
+{% block title %}Shopping Cart{% endblock %}
+
 {% block content %}
- 
-<h1>Apka Cart</h1>
-<div id="cart-items">
-    <!-- Cart item will be displayed here -->
+<h2 class="mb-4">🛒 आपका कार्ट</h2>
 
-</div>
- <a href="{% url 'home' %}">खरीदारी जारी रखें</a>
+{% if cart_items %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
 
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>₹{{ item.product.price }}</td>
 
+            <td>
+                <a href="{% url 'decrement_quantity' item.id %}" class="btn btn-sm btn-secondary">-</a>
+                <span class="px-2">{{ item.quantity }}</span>
+                <a href="{% url 'increment_quantity' item.id %}" class="btn btn-sm btn-secondary">+</a>
+            </td>
+
+            <td>₹{{ item.total_price }}</td>
+
+            <td>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Total Items: {{ total_items }}</h3>
+<h3>Total Price: ₹{{ total_price }}</h3>
+
+<a href="{% url 'clear_cart' %}" class="btn btn-warning mt-3">Clear Cart</a>
+
+{% else %}
+<p>आपका कार्ट खाली है 😔</p>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-primary mt-4">खरीदारी जारी रखें</a>
 {% endblock %}

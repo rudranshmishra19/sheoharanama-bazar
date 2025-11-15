@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from store.views import ai_chat
 
 urlpatterns = [
     path('', include("store.urls")),
     path('admin/', admin.site.urls),
+    path("chatbot/",ai_chat,name="ai_chat"),
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+
 # Create your models here.
 class Category(models.Model):
     name=models.CharField(max_length=100,unique=True)
@@ -22,6 +23,37 @@ class Product(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True, default='proudcts/default.png')
+    quantity=models.DecimalField(max_digits=10,decimal_places=2)
+
+    # Dynamic features
+    package_type =models.CharField(max_length=100,blank=True,null=True)
+    diet_type=models.CharField(max_length=100,blank=True,null=True)
+    item_form=models.CharField(max_length=100,blank=True,null=True)
+    weight=models.CharField(max_length=100, blank=True,null=True)
+    speciality=models.CharField(max_length=200, blank=True, null=True)
+    brand=models.CharField(max_length=100, blank=True, null=True)
+
+
+    #Quantity field
+    quantity =models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=1,
+        help_text="Numeric quantity (e.g 1.5 for 1.5kg or 2 for 2 pieces )"
+    )
+    #Unit field
+    UNIT_CHOICES =[
+        ('pcs', 'pieces'),
+        ('g','Grams'),
+        ('kg','Kilograms'),
+        ('ml','Millilitres'),
+        ('ltr','Litres'),
+        ('pkt','Packet'),
+        ('jar','Jar'),
+
+    ]
+    unit=models.CharField(max_length=10,choices=UNIT_CHOICES,default='pcs')
+
     
     def __str__(self):
         return self.name
@@ -77,11 +109,21 @@ class CartItem(models.Model):
     quantity=models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} x {self.product.name}"
+        # Handle case where product might be None
+        if self.product:
+              return f"{self.quantity} x {self.product.name}"
+        else:
+            return f"{self.quantity} x [Deleted Product ] (ID: {self.id})" 
     
     @property
     def total_price(self):
-        return self.product.price *self.quantity
+        # Handle case where product might be None
+        if self.product and self.product.price:
+            return self.product.price *self.quantity
+        else:
+            return 0  #return None,depending on your preference
+        
+        
     
     
      

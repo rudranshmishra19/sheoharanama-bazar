@@ -9,3 +9,7 @@ admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(Cart)
 admin.site.register(CartItem)
+
+class productAdmin(admin.ModelAdmin):
+    list_display=('name','category','price','package_type','diet_type', 'weight', 'brand' )
+    search_fields=('name','brand','category__name')

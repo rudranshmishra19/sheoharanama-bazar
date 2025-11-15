@@ -10,11 +10,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Order,Product,OrderItem
 from django.db.models import Q
+from google import genai
+from django.http import JsonResponse
 
 def home_view(request):
     """Home page with dynamic categories"""
     categories=Category.objects.all() #Get all categories from database
-    featured_products=Product.objects.filter(available=True)[:4]  #frist 6 products
+    featured_products=Product.objects.filter(available=True)[:3]  #frist 6 products
 
     #Get address from session or use default
    
@@ -23,7 +25,7 @@ def home_view(request):
     context={
         'categories':categories, #This will be used in navigation 
         'featured_products':featured_products,
-       
+        
 
                                                               
     }
@@ -45,8 +47,6 @@ def category_products(request,category_slug):
 
 def test_categories(request):
     return render(request, 'base.html')
-
-
         
 def product_list(request):
     """All products page"""
@@ -65,7 +65,37 @@ def product_list(request):
         return render(request,'products/list.html',context)
     except Exception as e:
         #Handle exeption 
-        return render(request,'error.html',{'error':str(e)})
+        return render(request,'error.html',{'errors':str(e)})
+
+def ai_chat(request):
+    user_msg = None
+    ai_reply = None
+
+    if request.method == "POST":
+        user_msg = request.POST.get("msg")
+
+        client = genai.Client(api_key=settings.GOOGLE_API_KEY)
+
+        try:
+            response = client.models.generate_content(
+             model="models/gemini-pro-latest",
+             contents=user_msg
+           )
+
+            ai_reply = response.text
+
+        except Exception as e:
+            if "overload" in str(e).lower():
+                ai_reply= "The AI model is temporarily overloaded. please try again in  a few seconds"
+            
+            else:
+                ai_reply=f" Error: {str(e)}"    
+    
+    return render(request, "chatbot.html", {
+        "user_msg": user_msg,
+        "ai_reply": ai_reply
+    })
+
 
 @login_required
 def order_history(request):
@@ -283,39 +313,30 @@ def cart_view(request):
         return render(request, 'products/cart.html', {'cart_items': []})
     
 @login_required
-def add_to_cart(request,product_id):
-    """
-      Add a product to the cart or increase quantity if already exists
-    """
-    try:
-        product=get_object_or_404(Product,id=product_id,available=True)
-        # Get customer and cart
-        customer=get_object_or_404(Customer,user=request.user)
-        cart,created=Cart.objects.get_or_create(customer=customer)
+def add_to_cart(request, product_id):
+    if request.method == 'POST':
+        try:
+            product = get_object_or_404(Product, id=product_id, available=True)
+            customer, customer_created = Customer.objects.get_or_create(user=request.user)
+            cart, cart_created = Cart.objects.get_or_create(customer=customer)
+            cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
 
-        # Check if product already exists in cart
-        cart_item,item_created=CartItem.objects.get_or_create(
-            cart=cart,
-            product=product
-        )
+            if not item_created:
+                cart_item.quantity += 1
+                cart_item.save()
+                messages.success(request, f"Increased quantity of {product.name}.")
+            else:
+                messages.success(request, f"{product.name} added to cart!")
 
-        if not item_created:
-            # Item already exists,increase quantity
-            cart_item.quantity+=1
-            cart_item.save()
-            message= f"Increased quantity of {product.name} in cart"
-        else:
-            # New item added
-            message=f"{product.name} added to cart successfully!"
+            return redirect(request.META.get("HTTP_REFERER", "cart"))
 
-        message=f"{product.name} added to cart sucessfully !"
+        except Exception as e:
+            messages.error(request, f"Error: {str(e)}")
+            return redirect("cart_view")
+    else:
+        messages.error(request, "Invalid request method")
+        return redirect("home")
 
-        # Redirect back to previous page or product list
-        next_page=request.Meta.get('HTTP_REFERER','product_list')
-        return redirect(next_page)
-    except Exception as e:
-        message.error(request,f"Error adding product to cart:{str(e)}") 
-        return redirect ('product_list')
 
 @login_required
 def update_cart_item(request,item_id):

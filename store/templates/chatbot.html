@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %} ai-chatbot {% endblock %}
+{% block content %}
+<div id="chatbox">
+    <h3>AI Chatbot</h3>
+
+    <div id="messages">
+        {% if user_msg %}
+            <p><b>You:</b> {{ user_msg }}</p>
+        {% endif %}
+
+        {% if ai_reply %}
+            <p><b>AI:</b> {{ ai_reply }}</p>
+        {% endif %}
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="msg" id="msg" placeholder="Ask something...">
+        <button type="submit" id="send-btn">Send</button>
+    </form>
+</div>
+{% endblock %}
+

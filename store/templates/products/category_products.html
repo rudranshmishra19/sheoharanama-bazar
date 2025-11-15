@@ -1,21 +1,68 @@
 {% extends "base.html" %}
-{% block title %} {{ category.name }} {% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>{{ category.name }}</h1>
+<section class="category-header">
+  <h1>{{ category.name }}</h1>
+  <p>इस श्रेणी के सभी उत्पाद देखें</p>
+</section>
 
-    <div class="products">
-        {% for product in products %}
-        <div class="product">
-            <h3>{{ product.name }}</h3>
-            <p>Price: ₹{{ product.price }}</p>
-            <p>Stock: ₹{{ product.stock }}</p>
-            <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+<section class="category-products-horizontal">
+  {% for product in products %}
+  <div class="product-horizontal-card">
+
+
+    <div class="product-left">
+
+      {% if product.image and product.image.name != 'products/default.png' %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="sbn-product-image">
+      {% else %}
+      <img src="{{ MEDIA_URL }}products/default.png" alt="Default image">
+      {% endif %}
     </div>
-      {% empty %}
-      <p>No products in this category yet.</p>
-     {% endfor %}
-   </div>
-</div>
+
+    <div class="product-right">
+      <h3>{{ product.name }}</h3>
+      <p>Price: ₹{{ product.price }}</p>
+      <p>Quantity: {{ product.quantity }} {{ product.unit }}</p>
+      <p>{{ product.description }}</p>
+
+
+       <h3>पैकेज जानकारी</h3>
+      <table class="package-info">
+        {% if product.package_type %}
+        <tr><td>Package Type</td> <td>{{ product.package_type }}</td></tr>
+        {% endif %}
+        {% if product.diet_type %}
+         <tr><td> Diet Type</td><td>{{ product.diet_type }}</td></tr>
+         {% endif %}
+         {% if product.item_form %}
+         <tr><td>Item Form </td><td> {{ product.item_form }}</td></tr>
+         {% endif %}
+         {% if product.weight %}
+         <tr><td>Weight</td><td> {{ product.weight }}</td></tr>
+         {% endif %}
+         {% if product.speciality %}
+         <tr><td>Speciality</td><td> {{ product.speciality }}</td></tr>
+         {% endif %}
+         {% if product.brand %}
+         <tr><td>Brand</td><td>{{ product.brand }}</td></tr>
+         {% endif %}
+         
+      </table>
+      <div class="product-buttons">
+      <form action="{% url 'add_to_cart' product.id %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn-cart">Add to Cart</button>
+        </form>
+
+
+      <a href="#buynow" class="btn-buy">Buy Now</a>
+    </div>
+    </div> 
+  </div>
+  {% empty %}
+  <p>No products in this category yet.</p>
+  {% endfor %}
+</section>
 {% endblock %}
