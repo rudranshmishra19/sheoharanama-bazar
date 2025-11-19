@@ -100,12 +100,17 @@ class Cart(models.Model):
 
     @property
     def total_price(self):
-        return sum (item.product.price * item.quantity for item in self.items.all() )
+        total =0 
+        for item in self.items.all():
+            if item.product and item.product.price is not None:
+                total +=item.product.price *item.quantity
+        return total        
+
 
 #CartItem model
 class CartItem(models.Model):
     cart=models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='items') 
-    product=models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity=models.PositiveIntegerField(default=1)
 
     def __str__(self):
