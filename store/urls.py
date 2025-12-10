@@ -27,6 +27,7 @@ urlpatterns=[
     path('track-package/',views.track_package,name='track_package'),
     path('orders/help/',views.help,name='help'),
     path('errors/',views.error,name='errors'),
+    path('buy-now/<int:product_id>/',views.buy_now_cod, name="buy_now_cod"),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

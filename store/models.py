@@ -22,8 +22,8 @@ class Product(models.Model):
     available=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='products/', blank=True, null=True, default='proudcts/default.png')
-    quantity=models.DecimalField(max_digits=10,decimal_places=2)
+    image = models.ImageField(upload_to='products/', blank=True, null=True, default='products/default.png')
+   
 
     # Dynamic features
     package_type =models.CharField(max_length=100,blank=True,null=True)
@@ -73,15 +73,28 @@ class Order(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     completed=models.BooleanField(default=False)
-
+    status= models.CharField(
+        max_length=20,
+        choices=[
+            ("placed","Placed"),
+            ("shipped","Shipped"),
+            ("out_for_delivery","OUt For Delivery"),
+            ("delivered", "Delivered"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="placed"
+    )
+    payment_method =models.CharField(max_length=10, default="COD")
     def __str__(self):
         return f"Order{self.id} by {self.customer}"
+
 
 #OrderItem model (products in an order )
 class OrderItem(models.Model):
     order=models.ForeignKey(Order,on_delete=models.CASCADE,related_name='items')
     product=models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     quantity=models.PositiveIntegerField(default=1)
+    price =models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
@@ -92,7 +105,10 @@ class Cart(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Cart of {self.customer.user.username}"
+        if self.customer and self.customer.user:
+            return f"Cart of {self.customer.user.username}"
+        return f"Cart #{self.id}"
+    
 
     @property
     def total_items(self):

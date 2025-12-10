@@ -56,8 +56,11 @@
         <button type="submit" class="btn-cart">Add to Cart</button>
         </form>
 
-
-      <a href="#buynow" class="btn-buy">Buy Now</a>
+      <form action="{% url 'buy_now_cod' product.id %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn-buy">Buy Now</button>
+      </form>
     </div>
     </div> 
   </div>

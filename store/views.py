@@ -458,7 +458,43 @@ def get_cart_summary(request):
         except (Customer.DoesNotExist,Cart.DoesNotExist):
             pass
     return {'cart_total_items':0, 'cart_total_price':0}
-        
+
+@login_required
+def buy_now_cod(request,product_id):
+    #1) Get Product
+    product = get_object_or_404(Product, id=product_id, available=True)
+    #2) Get or create customer profile
+    customer,_ =Customer.objects.get_or_create(user=request.user)
+
+    if request.method =="POST":
+        # 3) Get quantity from form
+        quantity =int(request.POST.get("quantity", 1))
+
+        #4) Create order(cod)
+        order=Order.objects.create(
+            customer=customer,
+            status="placed",
+            payment_method="COD",
+            completed=False,
+        )
+
+        #5)Create OrderItem
+        OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=quantity,
+            price=product.price, #snapshot of price at order time
+        )
+       
+        messages.success(request,"Order placed sucessfully with Cash on Delivery .")
+        return redirect("order_details", order_id=order.id) 
+    
+    #Get request->show confirmation page
+    return render(request, "orders/buy_now_confirm.html", {
+        "Product": product,
+        "customer":customer,
+    })
+
 
 
 
