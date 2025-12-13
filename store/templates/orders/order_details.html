@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Order #{{ order.id }}</h2>
+
+    <!-- Order Summary -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Order Summary</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Status:</strong> {{ order.status }}</p>
+            <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+            <p><strong>Placed On:</strong> {{ order.created_at }}</p>
+            <p><strong>Total Amount:</strong> ₹{{ total }}</p>
+        </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Customer Details</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ order.customer.user.first_name }} {{ order.customer.user.last_name }}</p>
+            <p><strong>Email:</strong> {{ order.customer.user.email }}</p>
+            {% if order.customer.address %}
+            <p><strong>Address:</strong> {{ order.customer.address }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Ordered Items -->
+    <div class="card">
+        <div class="card-header">
+            <strong>Items in this Order</strong>
+        </div>
+        <div class="card-body">
+
+            {% if items %}
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.product.title }}</td>
+                            <td>
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" width="70" height="70">
+                                {% else %}
+                                    <em>No image</em>
+                                {% endif %}
+                            </td>
+                            <td>₹{{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>₹{{ item.subtotal|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No items found.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

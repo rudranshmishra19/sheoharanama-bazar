@@ -98,6 +98,12 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+    
+    @property
+    def subtotal(self):
+        #Decimal *int ->deciaml
+        return self.price * self.quantity
+    
 
 #Cart model
 class Cart(models.Model):

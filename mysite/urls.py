@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include("store.urls")),
     path('admin/', admin.site.urls),
     path("chatbot/",ai_chat,name="ai_chat"),
+    path("api/",include("store.api.urls")),
 ]

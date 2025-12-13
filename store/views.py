@@ -487,16 +487,54 @@ def buy_now_cod(request,product_id):
         )
        
         messages.success(request,"Order placed sucessfully with Cash on Delivery .")
-        return redirect("order_details", order_id=order.id) 
+        return redirect("order_details", pk=order.id) 
     
     #Get request->show confirmation page
-    return render(request, "orders/buy_now_confirm.html", {
-        "Product": product,
-        "customer":customer,
-    })
+    # return render(request, "orders/buy_now_confirm.html", {
+    #     "Product": product,
+    #     "customer":customer,
+    # })
+
+@login_required
+def order_details(request,pk):
+    """
+    Minimal order details page.
+    Shows:order id/date/status/shipping snapshot,payment method,
+    items(name/qty/price) and totals.
+    Only the order owner can view
+    """
+    # Ensure the user has a Customer profile
+    try:
+        customer = request.user.customer
+    except Customer.DoesNotExist:
+        messages.error(request," Customer profile not found. ")
+        return redirect("home")
+
+    #Fetch the order and ensure is belongs to the logged-in customer
+    order=get_object_or_404(Order,id=pk,customer=customer)
+    #Prefetch items for efficieny 
+    order_items=order.items.select_related('product').all()
+    # Customer totals
+    subtotal= sum(item.price * item.quantity for item in order_items )
+
+    shipping =order.shipping_cost if hasattr(order, "shipping_cost") else 0
+    discount =order.discount if hasattr(order, "discount") else 0
+
+    total =subtotal +shipping -discount
+
+    context ={
+        "order":order,
+        "items":order_items,   #send as "items" so template can use {% for item in items %}
+        "subtotal":subtotal, #fixed: send actual subtotal
+        "shipping":shipping,
+        "discount":discount,
+        "total":total,
 
 
+    } 
+    return render(request, "orders/order_details.html",context)
 
+        
 
      
     
