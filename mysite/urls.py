@@ -17,10 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from store.views import ai_chat
+from django.urls import path
+from rest_framework_simplejwt.views import(
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('', include("store.urls")),
     path('admin/', admin.site.urls),
     path("chatbot/",ai_chat,name="ai_chat"),
     path("api/",include("store.api.urls")),
+    path('api/token/',TokenObtainPairView.as_view(),name="token_obtain_pair"),
+    path('api/token/refresh',TokenRefreshView.as_view(), name="token_refresh"),
 ]
+
