@@ -20,19 +20,30 @@ class OrderListView(ListAPIView):
 
         ).select_related("customer")
 
-@permission_classes([IsAuthenticated])
-@api_view(['GET'])
-def cart(request):
-    cart=Cart.objects.all()
-    serializer=CartSerializer(cart,many=True)
-    return Response(serializer.data)
+class CartListView(ListAPIView):
+    serializer_class=CartSerializer
+    permission_classes=[IsAuthenticated]
 
-@permission_classes([IsAuthenticated])
-@api_view(['GET'])
-def cartItem(request):
-    cartItem=CartItem.objects.all()
-    serializer=CartItemSerializer(cartItem,many=True)
-    return Response(serializer.data)
+    def get_queryset(self):
+        return Cart.objects.filter(
+            customer__user=self.request.user
+
+        ).select_related("customer")
+
+class CartItemListView(ListAPIView):
+    serializer_class=CartItemSerializer
+    permission_classes=[IsAuthenticated]
+
+    def get_queryset(self):
+        return CartItem.objects.filter(
+         cart__customer__user=self.request.user
+
+             
+        ).select_related("cart","product")
+
+
+
+
 
 
 

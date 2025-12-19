@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import product_list, order_list,cart,cartItem
-
+# from store.api.views import Cart,CartItem
+from store.api.views import ProductListView, OrderListView,CartListView,CartItemListView
 urlpatterns =[
-    path("products/",product_list,name="product-list"),
-    path("orders/",order_list,name="order-list"),
-    path("carts/",cart,name="cart"),
-    path("cartItems/",cartItem, name="cartItem"),
+    # path("products/",product_list,name="product-list"),
+    # path("orders/",order_list,name="order-list"),
+    
+    path("carts/",CartListView.as_view(),name="cart-list"),
+    path("cartitems/",CartItemListView.as_view(),name="cart-Item"),
+    path("products/", ProductListView.as_view(), name="product-list"),
+    path("orders/", OrderListView.as_view(), name="order-list"),
 ]
