@@ -11,6 +11,11 @@ class OrderSerializer(serializers.ModelSerializer):
         model=Order
         fields=["id", "customer", "created_at", "updated_at", "completed"]
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OrderItem
+        fields=["id","order","product","quantity","price"]
+
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model=Cart
