@@ -1,13 +1,17 @@
-from django.urls import path
-# from store.api.views import Cart,CartItem
-from store.api.views import ProductListView, OrderListView,CartListView,CartItemListView,OrderItemListView
-urlpatterns =[
-    # path("products/",product_list,name="product-list"),
-    # path("orders/",order_list,name="order-list"),
-    
-    path("carts/",CartListView.as_view(),name="cart-list"),
-    path("cartitems/",CartItemListView.as_view(),name="cart-Item"),
-    path("products/", ProductListView.as_view(), name="product-list"),
-    path("orders/", OrderListView.as_view(), name="order-list"),
-    path("orderitems/", OrderItemListView.as_view(), name="orderItem-list"),
-]
+from rest_framework.routers import DefaultRouter
+from store.api.views import(
+    ProductViewSet,
+    OrderViewSet,
+    OrderItemViewSet,
+    CartViewSet,
+    CartItemViewSet
+)
+
+router=DefaultRouter()
+router.register("products",ProductViewSet, basename="products")
+router.register("orders",OrderViewSet,basename="orders")
+router.register("order-items",OrderItemViewSet,basename="order-items")
+router.register("carts",CartViewSet,basename="carts")
+router.register("cart-items",CartItemViewSet,basename="cart-items")
+
+urlpatterns=router.urls

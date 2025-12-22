@@ -9,7 +9,8 @@ class ProductSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=Order
-        fields=["id", "customer", "created_at", "updated_at", "completed"]
+        fields="__all__"
+        read_only_fields=["id", "customer", "created_at", "updated_at", "completed"]
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,5 +25,7 @@ class CartSerializer(serializers.ModelSerializer):
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model=CartItem
-        fields=["id", "cart", "product" ,"quantity"]
+        fields="__all__"
+        read_only_fields=["cart"]
+
 
