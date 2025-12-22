@@ -1,54 +1,60 @@
-from rest_framework.decorators import api_view,permission_classes
-from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import ListAPIView
 from store.models import Product,Order,Cart,CartItem,OrderItem
-from .serializers import ProductSerializer, OrderSerializer,CartSerializer,CartItemSerializer,OrderItemSerializer
-
-class ProductListView(ListAPIView):
+from .serializers import (
+    ProductSerializer,
+      OrderSerializer,
+      CartSerializer,
+      CartItemSerializer,
+      OrderItemSerializer
+)
+class ProductViewSet(ReadOnlyModelViewSet):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     permission_classes=[IsAuthenticated]
 
-class OrderListView(ListAPIView):
+class OrderViewSet(ReadOnlyModelViewSet):
     serializer_class=OrderSerializer
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        return Order.objects.filter(
-            customer__user=self.request.user
+        
+        return(
+         Order.objects.filter(
+            customer__user=self.request.user)
+         ).select_related("customer")
 
-        ).select_related("customer")
-
-class OrderItemListView(ListAPIView):
+class OrderItemViewSet(ReadOnlyModelViewSet):
     serializer_class=OrderItemSerializer
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        return OrderItem.objects.filter(
-            Order__customer__user=self.request.user
+        return( OrderItem.objects.filter(
+            order__customer__user=self.request.user)
 
         ).select_related("order","product")
-class CartListView(ListAPIView):
+class CartViewSet(ReadOnlyModelViewSet):
     serializer_class=CartSerializer
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        return Cart.objects.filter(
-            customer__user=self.request.user
+        return( Cart.objects.filter(
+            customer__user=self.request.user)
 
         ).select_related("customer")
 
-class CartItemListView(ListAPIView):
+class CartItemViewSet(ReadOnlyModelViewSet):
     serializer_class=CartItemSerializer
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        return CartItem.objects.filter(
-         cart__customer__user=self.request.user
+        return (CartItem.objects.filter(
+         cart__customer__user=self.request.user)
 
              
         ).select_related("cart","product")
+
+
 
 
 
