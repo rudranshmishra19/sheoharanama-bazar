@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from store.models import Product,Order,Cart,CartItem,OrderItem
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .serializers import (
     ProductSerializer,
@@ -56,7 +58,19 @@ class OrderViewSet(ModelViewSet):
             quantity=quantity,
             price=product.price
         )
+    # To cancel the order 
+    @action(detail=True, methods=["post"])
+    def cancel(self,request,pk=None):
+        order=self.get_object()
 
+        if order.completed:
+            raise ValidationError("Completed order cannot be cancelled")
+
+        order.status= "cancelled"
+        order.save()
+        return Response({"message": "Order cancelled "})
+        
+        
 
 
 class OrderItemViewSet(ReadOnlyModelViewSet):
