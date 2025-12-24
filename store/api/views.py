@@ -5,6 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import (
     ProductSerializer,
@@ -49,7 +50,7 @@ class OrderViewSet(ModelViewSet):
             customer=self.request.user.customer,
             status="placed",
             payment_method="COD",
-            completed=False
+            
         )    
 
         OrderItem.objects.create(
@@ -63,14 +64,23 @@ class OrderViewSet(ModelViewSet):
     def cancel(self,request,pk=None):
         order=self.get_object()
 
-        if order.completed:
-            raise ValidationError("Completed order cannot be cancelled")
-
-        order.status= "cancelled"
+        if order.status=="delivered":
+            raise ValidationError("Delivered order cannot be cancelled")
+        
+        #2 already cancelled
         if order.status=="cancelled":
-            return ValidationError("Order is already cancelled")
+            return Response (
+                {"detail": "Order is already cancelled"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # 3 Cancel the order 
+        order.status="cancelled"
         order.save()
-        return Response({"message": "Order cancelled "})
+
+        return Response(
+            {"message": "Order cancelled "},
+            status=status.HTTP_200_OK
+                        )
         
         
 

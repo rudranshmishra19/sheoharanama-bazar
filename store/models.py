@@ -72,13 +72,12 @@ class Order(models.Model):
     customer=models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    completed=models.BooleanField(default=False)
     status= models.CharField(
         max_length=20,
         choices=[
             ("placed","Placed"),
             ("shipped","Shipped"),
-            ("out_for_delivery","OUt For Delivery"),
+            ("out_for_delivery","out For Delivery"),
             ("delivered", "Delivered"),
             ("cancelled", "Cancelled"),
         ],

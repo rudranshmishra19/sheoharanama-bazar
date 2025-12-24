@@ -1,40 +1,56 @@
-{% extends 'base.html ' %}
-{%block content %}
+{% extends 'base.html' %}
+{% block content %}
+
 <div class="container">
     <h1>Your Order History</h1>
+
     {% if orders %}
     <div class="orders-list">
         {% for order in orders %}
         <div class="order-card">
-            <div class="order-header">
-                <h3>Order # {{order.id }}</h3>
-                <span class="order-date">{{ order.create_at | date:"F d, Y" }}</span>
-                <span class="order-status {% if order.completed %} completed {% else %} pending {% endif %}">
-                    {% if order.completed %}Completed{%else %} Pending {% endif %}
 
+            <div class="order-header">
+                <h3>Order #{{ order.id }}</h3>
+
+                <span class="order-date">
+                    {{ order.created_at|date:"F d, Y" }}
                 </span>
 
+                <span class="order-status {{ order.status }}">
+                    {{ order.get_status_display }}
+                </span>
             </div>
+
             <div class="order-items">
                 {% for item in order.items.all %}
                 <div class="order-item">
                     <span class="item-name">{{ item.product.name }}</span>
-                    <span class="item-quantity">Qty:{{ item.quantity }}</span>
+                    <span class="item-quantity">Qty: {{ item.quantity }}</span>
                     <span class="item-price">₹{{ item.product.price }}</span>
                 </div>
                 {% endfor %}
             </div>
+
             <div class="order-actions">
-                <a href="#" class="btn-return">Return Items</a>
-                <a href="#" class="btn-track">Track Order</a>
+
+                {% if order.status == "delivered" %}
+                    <a href="#" class="btn-return">Return Items</a>
+                {% endif %}
+
+                {% if order.status != "cancelled" %}
+                    <a href="#" class="btn-track">Track Order</a>
+                {% endif %}
+
             </div>
+
         </div>
         {% endfor %}
     </div>
+
     {% else %}
     <div class="no-orders">
         <h3>No orders yet</h3>
-        <p>You haven't placed any orders with  us </p>
+        <p>You haven't placed any orders with us</p>
         <a href="{% url 'list' %}" class="btn-primary">Start Shopping</a>
     </div>
     {% endif %}

@@ -475,7 +475,6 @@ def buy_now_cod(request,product_id):
             customer=customer,
             status="placed",
             payment_method="COD",
-            completed=False,
         )
 
         #5)Create OrderItem
