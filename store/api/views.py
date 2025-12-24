@@ -67,6 +67,8 @@ class OrderViewSet(ModelViewSet):
             raise ValidationError("Completed order cannot be cancelled")
 
         order.status= "cancelled"
+        if order.status=="cancelled":
+            return ValidationError("Order is already cancelled")
         order.save()
         return Response({"message": "Order cancelled "})
         

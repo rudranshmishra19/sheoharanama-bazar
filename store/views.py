@@ -102,7 +102,7 @@ def order_history(request):
     """Display user's order histoty"""
     try:
         customer=request.user.customer
-        orders=Order.objects.filter(customer=customer).prefetch_related('item_product')
+        orders=Order.objects.filter(customer=customer)
     except:
         orders=[]
     context={'orders': orders}
