@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.throttling import UserRateThrottle
 
 from .serializers import (
     ProductSerializer,
@@ -60,12 +61,15 @@ class OrderViewSet(ModelViewSet):
             price=product.price
         )
     # To cancel the order 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["post"],)
     def cancel(self,request,pk=None):
         order=self.get_object()
 
         if order.status=="delivered":
-            raise ValidationError("Delivered order cannot be cancelled")
+               return Response(
+               {"detail": "Delivered order cannot be cancelled"},
+                 status=status.HTTP_403_FORBIDDEN
+                )
         
         #2 already cancelled
         if order.status=="cancelled":
@@ -81,10 +85,16 @@ class OrderViewSet(ModelViewSet):
             {"message": "Order cancelled "},
             status=status.HTTP_200_OK
                         )
+    @action(detail=True, 
+            methods=["post"], 
+            throttle_classes=[UserRateThrottle]
+            )
+    def example_adhoc_method(self,request, pk=None):
+        return Response(
+            {"status": "request was permitted"},
+            status=status.HTTP_200_OK
+        )
         
-        
-
-
 class OrderItemViewSet(ReadOnlyModelViewSet):
     serializer_class=OrderItemSerializer
     permission_classes=[IsAuthenticated]
