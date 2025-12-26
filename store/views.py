@@ -24,10 +24,7 @@ def home_view(request):
 
     context={
         'categories':categories, #This will be used in navigation 
-        'featured_products':featured_products,
-        
-
-                                                              
+        'featured_products':featured_products,                
     }
     return render(request,'products/home.html',context)
 # Category views

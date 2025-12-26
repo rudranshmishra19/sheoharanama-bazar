@@ -1,20 +1,60 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from rest_framework.permissions import IsAuthenticated
-from store.models import Product,Order,Cart,CartItem,OrderItem
+from rest_framework.permissions import IsAuthenticated,AllowAny
+from store.models import Product,Order,Cart,CartItem,OrderItem,Category
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.throttling import UserRateThrottle
+from rest_framework.views import APIView
 
 from .serializers import (
     ProductSerializer,
       OrderSerializer,
       CartSerializer,
       CartItemSerializer,
-      OrderItemSerializer
+      OrderItemSerializer,
+      CatergorySerializer,
+      FeaturedProductSerializer
 )
+class HomeApiView(APIView):
+    permission_classes=[AllowAny]
+
+    def get(self,request):
+        categories=Category.objects.all()
+        featured_products=Product.objects.filter(available=True)[:3]
+
+        category_data=CatergorySerializer(categories,many=True).data
+        product_data=FeaturedProductSerializer(featured_products,many=True).data
+
+        return Response({
+            "categoires":category_data,
+            "featured_products":product_data,
+        })
+
+class TrackPackage(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        orders=Order.objects.filter(
+            customer__user=request.user
+            )
+
+        pending_orders=orders.filter(status__in=['pending','processing','shipped'])
+        delivered_orders=orders.filter(status='delivered')
+        cancelled_orders=orders.filter(status='cancelled')
+
+        Pending_orders=OrderSerializer(pending_orders,many=True).data
+        Delivered_orders=OrderSerializer(delivered_orders,many=True).data
+        Cancelled_orders=OrderSerializer(cancelled_orders,many=True).data
+       
+        return Response({
+            "pending_orders":Pending_orders,
+            "delivered_orders":Delivered_orders,
+            "cancelled_orders":Cancelled_orders,
+        })
+      
+        
 class ProductViewSet(ReadOnlyModelViewSet):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
