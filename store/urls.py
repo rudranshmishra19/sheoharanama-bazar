@@ -29,6 +29,7 @@ urlpatterns=[
     path('errors/',views.error,name='errors'),
     path('buy-now/<int:product_id>/',views.buy_now_cod, name="buy_now_cod"),
     path('order/<int:pk>/', views.order_details, name='order_details'),
+    path('chat/', views.ai_chat, name='ai_chat'),
         
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
