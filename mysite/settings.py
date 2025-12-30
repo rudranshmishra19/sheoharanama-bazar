@@ -190,5 +190,3 @@ LOGOUT_REDIRECT_URL='/' #Redirect to home after logout
 #Optional :For better security
 SESSION_COOKIE_AGE=1209600
 
-
-

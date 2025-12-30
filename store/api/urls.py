@@ -16,7 +16,7 @@ router.register("products",ProductViewSet, basename="products")
 router.register("orders",OrderViewSet,basename="orders")
 router.register("order-items",OrderItemViewSet,basename="order-items")
 router.register("carts",CartViewSet,basename="carts")
-router.register("cart-items",CartItemViewSet,basename="cart-items")
+router.register("cart-items",CartItemViewSet,basename="cartitems")
 
 urlpatterns=[
     path("home/",HomeApiView.as_view(),name="home-api"),

@@ -79,6 +79,11 @@ class OrderViewSet(ModelViewSet):
         if not product_id:
             raise ValidationError({"product" :"Product is required"})
         
+        # Fix Start
+        try:
+            quantity=int(quantity)
+        except(TypeError,ValueError):
+            raise ValidationError({"quantity":"Quantity must be a number"})    
         if quantity<=0:
             raise ValidationError({"quantity": "Quantity must be greater than 0"})
         
