@@ -16,11 +16,12 @@ from dotenv import load_dotenv
 from datetime import timedelta
 import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv()  #load .env file
-GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
 
+# FORCE load .env and override system variables
+load_dotenv(BASE_DIR / ".env", override=True)
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 
 
@@ -30,14 +31,19 @@ GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key-for-local")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-CSRF_TRUSTED_ORIGINS = os.environ.get(
-    "CSRF_TRUSTED_ORIGINS", ""
-).split(",")
+# 1. Get the string from the environment safely
+csrf_raw = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
 
+# 2. Split it and remove any empty strings that cause the crash
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_raw.split(",") if origin.strip()]
+
+# 3. Fallback: If it's empty (like on your laptop), add local defaults
+if not CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://localhost"]
 
 
 # Application definition
@@ -87,13 +93,13 @@ SIMPLE_JWT ={
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -122,14 +128,23 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+ 
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
+        default=os.environ.get("LOCAL_DATABASE_URL") if not DEBUG else os.environ.get("DATABASE_URL"),
         conn_max_age=600,
-        ssl_require=True,
     )
 }
+
+# Enforce SSL in production (Neon)
+if not DEBUG:
+    DATABASES["default"]["OPTIONS"] = {
+        "sslmode": "require"
+    }
+
+
+    
 
 
 
@@ -194,3 +209,7 @@ LOGOUT_REDIRECT_URL='/' #Redirect to home after logout
 #Optional :For better security
 SESSION_COOKIE_AGE=1209600
 
+# Force Django to use standard static files when you are on your laptop
+if DEBUG:
+    WHITENOISE_AUTOREFRESH = True
+    WHITENOISE_USE_FINDERS = True
