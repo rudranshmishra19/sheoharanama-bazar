@@ -130,19 +130,22 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
  
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("LOCAL_DATABASE_URL") if not DEBUG else os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-    )
-}
-
-# Enforce SSL in production (Neon)
-if not DEBUG:
-    DATABASES["default"]["OPTIONS"] = {
-        "sslmode": "require"
+# Database Switch: Neon for Production, Local Postgres for Dev
+if os.environ.get('RENDER'):
+    # We are on Render (Cloud)
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-
+    DATABASES["default"]["OPTIONS"] = {"sslmode": "require"}
+else:
+    # We are on your laptop (Local)
+    # Using the LOCAL_DATABASE_URL from your .env
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get("LOCAL_DATABASE_URL"),
+            conn_max_age=600,
+        )
+    }
 
     
 

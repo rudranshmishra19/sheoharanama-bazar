@@ -12,6 +12,21 @@ from .models import Order,Product,OrderItem
 from django.db.models import Q
 from google import genai
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+
+def make_me_admin(request):
+    user, created=User.objects.get_or_create(
+        username="rudransh5861",
+        defaults={"email": "rudranshmishra@gmail.com"}
+    )
+    user.set_password("Rudransh%40") 
+    user.is_staff=True
+    user.is_superuser=True
+    user.save()
+
+    return HttpResponse("Admin user created / updated successfully !")
 
 def home_view(request):
     """Home page with dynamic categories"""
