@@ -51,7 +51,7 @@ pip install -r requirements.txt
 choco install postgresql
 #in Psql console:
 CREATE DATABASE store_db;
-CREATE USER store_user WITH PASSWORD 'password123';
+CREATE USER store_user WITH PASSWORD 'your_password';
 ALTER ROLE store_user SET client_encoding TO 'utf8';
 ALTER ROLE store_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE store_user SET timezone TO 'UTC';
