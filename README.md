@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 # Database setup (postgreSQL)
 ### Windows -one command install:
-''' bash
+```bash
 choco install postgresql
 #in Psql console:
 CREATE DATABASE store_db;
@@ -57,8 +57,34 @@ ALTER ROLE store_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE store_user SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE store_db TO store_user;
 \q
-# copy enviroment
-.env file
+```env
+cp.env.example .env
+python manage.py migrate
+python manage.py runserver
+```
+# project Structure
+RealNorth/
+|-store/ #Main app(api,data,test)
+|-mysite/ #project settings
+|-static/ #CSS/JS/Images
+|-media/ #User uploads
+|-env
+|-store_analysis
+|-final store_analysis
+|-requirements.txt
+|-manage.py
 
+Api Endpoints
+| Method | Endpoint       | Description   |
+| ------ | -------------- | ------------- |
+| GET    | /api/products/ | List products |
+| POST   | /api/cart/add/ | Add to cart   |
+| GET    | /api/orders/   | User orders   |
+| POST   | /auth/token/   | JWT login     |
+
+License
+MIT License
+Author
+Rudransh Mishra
 
 
