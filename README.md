@@ -8,20 +8,20 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)](https://postgresql.org/)
 
 ## 🚀 Live Demo
-
-
+https://sheoharanama-bazar.onrender.com/
 ## 🚀 Features
 
-- Django-based backend architecture
-- RESTful API (Django REST Framework)
-- PostgreSQL database integration
-- User authentication & authorization
-- Environment-based configuration
-- Static file handling with WhiteNoise
-- Production-ready settings
-- Clean and modular codebase
+**User Authentication** - Registration, login, password reset
+**Product Catalog** - Browse products with categories and search
+**Shopping Cart** - Add/remove items, update quantities
+**Order Management** - Track orders, view order history
+**Responsive Design** - Works on desktop, tablet, mobile
+**Admin Dashboard** - Manage products, users, orders
+## 📸 Screenshots
 
----
+| Home Page | Product Detail | Shopping Cart |
+|-----------|---------------|---------------|
+| ![Home](screenshots/home.png) | ![Product](screenshots/product.png) | ![Cart](screenshots/cart.png) |
 
 ## 🛠 Tech Stack
 
