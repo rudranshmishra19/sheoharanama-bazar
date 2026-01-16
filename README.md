@@ -24,15 +24,41 @@ https://sheoharanama-bazar.onrender.com/
 | ![Home](screenshots/home.png) | ![Product](screenshots/product.png) | ![Cart](screenshots/cart.png) |
 
 ## 🛠 Tech Stack
-
+- **Frontend:** HTML/CSS/JS   
 - **Backend:** Django, Django REST Framework  
 - **Database:** PostgreSQL  
 - **Authentication:** Django Auth / JWT  
 - **Static Files:** WhiteNoise  
-- **Deployment:** Render (or similar cloud platform)  
+- **Deployment:** Render   
 - **Language:** Python 3.x  
 
----
+# Quick Start
+''' Bash
+#  Clone & setup 
+git clone https://github.com/rudranshmishra19/RealNorth.git
+cd RealNorth
 
-## 📁 Project Structure
+#Virtual environment
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+
+#Install dependencies
+pip install -r requirements.txt
+
+# Database setup (postgreSQL)
+### Windows -one command install:
+''' bash
+choco install postgresql
+#in Psql console:
+CREATE DATABASE store_db;
+CREATE USER store_user WITH PASSWORD 'password123';
+ALTER ROLE store_user SET client_encoding TO 'utf8';
+ALTER ROLE store_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE store_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE store_db TO store_user;
+\q
+# copy enviroment
+.env file
+
+
 
