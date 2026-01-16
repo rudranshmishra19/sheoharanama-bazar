@@ -1,10 +1,14 @@
-# 🌐 RealNorth
+# RealNorth 🌐
 
-**RealNorth** is a backend-driven web application built with **Django** and **PostgreSQL**, designed with scalability, clean architecture, and production readiness in mind.
+**Production-ready Django backend** built with PostgreSQL, DRF APIs, JWT auth, and clean architecture. Demonstrates scalable web application development for real-world deployment.
 
-This project demonstrates real-world backend development skills including API design, authentication, database modeling, and deployment configuration.
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white)](https://djangoproject.com/)
+[![DRF](https://img.shields.io/badge/DjangoREST-404040?style=flat&logoColor=white)](https://djangorestframework.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)](https://postgresql.org/)
 
----
+## 🚀 Live Demo
+
 
 ## 🚀 Features
 
